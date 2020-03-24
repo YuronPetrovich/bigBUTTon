@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Мар 25 2020 г., 00:30
+-- Время создания: Мар 25 2020 г., 01:22
 -- Версия сервера: 8.0.15
 -- Версия PHP: 7.1.32
 
@@ -144,7 +144,9 @@ INSERT INTO `privs2roles` (`id`, `roles_id`, `privs_id`) VALUES
 (9, 2, 4),
 (10, 3, 1),
 (11, 4, 2),
-(12, 5, 3);
+(12, 5, 3),
+(13, 4, 1),
+(14, 5, 1);
 
 -- --------------------------------------------------------
 
@@ -278,7 +280,7 @@ ALTER TABLE `privs`
 -- AUTO_INCREMENT для таблицы `privs2roles`
 --
 ALTER TABLE `privs2roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT для таблицы `roles`
