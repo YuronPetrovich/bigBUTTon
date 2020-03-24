@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Мар 21 2020 г., 14:28
--- Версия сервера: 10.3.13-MariaDB-log
+-- Время создания: Мар 24 2020 г., 23:54
+-- Версия сервера: 8.0.15
 -- Версия PHP: 7.1.32
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -30,17 +30,29 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `boreholes` (
   `id` int(11) NOT NULL,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `coordinate` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `file_id` int(11) DEFAULT NULL
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `map_settings` json DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Дамп данных таблицы `boreholes`
 --
 
-INSERT INTO `boreholes` (`id`, `name`, `coordinate`, `file_id`) VALUES
-(1, 'first_hole', 'JSON_code', 1);
+INSERT INTO `boreholes` (`id`, `name`, `description`, `map_settings`) VALUES
+(1, 'first_hole', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `borholes2field`
+--
+
+CREATE TABLE `borholes2field` (
+  `id` int(11) NOT NULL,
+  `boreholes_id` int(11) DEFAULT NULL,
+  `fields_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -50,18 +62,17 @@ INSERT INTO `boreholes` (`id`, `name`, `coordinate`, `file_id`) VALUES
 
 CREATE TABLE `fields` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `center` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `area` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `map_settings` json DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Дамп данных таблицы `fields`
 --
 
-INSERT INTO `fields` (`id`, `name`, `description`, `center`, `area`) VALUES
-(1, 'first_field', 'disc', 'coordinates', 'JSON_code');
+INSERT INTO `fields` (`id`, `name`, `description`, `map_settings`) VALUES
+(1, 'first_field', 'disc', NULL);
 
 -- --------------------------------------------------------
 
@@ -71,16 +82,17 @@ INSERT INTO `fields` (`id`, `name`, `description`, `center`, `area`) VALUES
 
 CREATE TABLE `files` (
   `id` int(11) NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `path` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id_borehole` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Дамп данных таблицы `files`
 --
 
-INSERT INTO `files` (`id`, `title`, `path`) VALUES
-(1, 'first_file', '\\files\\first_file.xls');
+INSERT INTO `files` (`id`, `title`, `path`, `id_borehole`) VALUES
+(1, 'first_file', '\\files\\first_file.xls', NULL);
 
 -- --------------------------------------------------------
 
@@ -90,7 +102,7 @@ INSERT INTO `files` (`id`, `title`, `path`) VALUES
 
 CREATE TABLE `privs` (
   `id` int(11) NOT NULL,
-  `name` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -98,9 +110,63 @@ CREATE TABLE `privs` (
 --
 
 INSERT INTO `privs` (`id`, `name`) VALUES
+(1, 'can_read'),
+(2, 'can_edit_borholes'),
+(3, 'can_edit_fields'),
+(4, 'can_edit_users'),
+(5, 'can_edit_privs');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `privs2roles`
+--
+
+CREATE TABLE `privs2roles` (
+  `id` int(11) NOT NULL,
+  `roles_id` int(11) DEFAULT NULL,
+  `privs_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `privs2roles`
+--
+
+INSERT INTO `privs2roles` (`id`, `roles_id`, `privs_id`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3),
+(4, 1, 4),
+(5, 1, 5),
+(6, 2, 1),
+(7, 2, 2),
+(8, 2, 3),
+(9, 2, 4),
+(10, 3, 1),
+(11, 4, 2),
+(12, 5, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `roles`
+--
+
+CREATE TABLE `roles` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `roles`
+--
+
+INSERT INTO `roles` (`id`, `name`) VALUES
 (1, 'super_admin'),
 (2, 'admin'),
-(3, 'guest');
+(3, 'guest'),
+(4, 'editor_boreholes'),
+(5, 'editor_fields');
 
 -- --------------------------------------------------------
 
@@ -110,16 +176,16 @@ INSERT INTO `privs` (`id`, `name`) VALUES
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `login` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `pass` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `priv_id` int(11) DEFAULT NULL
+  `login` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pass` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `role_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `login`, `pass`, `priv_id`) VALUES
+INSERT INTO `users` (`id`, `login`, `pass`, `role_id`) VALUES
 (1, 'admin', 'admin', 1);
 
 --
@@ -130,6 +196,12 @@ INSERT INTO `users` (`id`, `login`, `pass`, `priv_id`) VALUES
 -- Индексы таблицы `boreholes`
 --
 ALTER TABLE `boreholes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `borholes2field`
+--
+ALTER TABLE `borholes2field`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -151,6 +223,18 @@ ALTER TABLE `privs`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `privs2roles`
+--
+ALTER TABLE `privs2roles`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `users`
 --
 ALTER TABLE `users`
@@ -165,6 +249,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `boreholes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT для таблицы `borholes2field`
+--
+ALTER TABLE `borholes2field`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `fields`
@@ -182,7 +272,19 @@ ALTER TABLE `files`
 -- AUTO_INCREMENT для таблицы `privs`
 --
 ALTER TABLE `privs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT для таблицы `privs2roles`
+--
+ALTER TABLE `privs2roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT для таблицы `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
