@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Мар 24 2020 г., 23:54
+-- Время создания: Мар 25 2020 г., 00:30
 -- Версия сервера: 8.0.15
 -- Версия PHP: 7.1.32
 
@@ -111,7 +111,7 @@ CREATE TABLE `privs` (
 
 INSERT INTO `privs` (`id`, `name`) VALUES
 (1, 'can_read'),
-(2, 'can_edit_borholes'),
+(2, 'can_edit_boreholes'),
 (3, 'can_edit_fields'),
 (4, 'can_edit_users'),
 (5, 'can_edit_privs');
