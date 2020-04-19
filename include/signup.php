@@ -10,19 +10,50 @@ $password2 = $_POST['password2'];
 $_SESSION['message'] = ' ';
 
 
-if($password1 === $password2){
+if(strlen($login)<4){
+$_SESSION['message'] = 'login must contain more than 4 characters';
+	header('Location: ../registration.php');
+}elseif (strlen($password1)<4 || strlen($password2)<4)
+	{
+$_SESSION['message'] = 'password must contain more than 4 characters';
+	header('Location: ../registration.php');
+}else{
+
+
+
+
+
+
+
+
+$check_user = mysqli_query($link, "SELECT * FROM users WHERE login = '$login' ");
+
+ if (mysqli_num_rows($check_user) > 0 ){
+
+ 		 	$_SESSION['message'] = 'Username "'.$login.'" is not available.';
+	header('Location: ../registration.php');
+
+ }else {
+
+ 	if($password1 === $password2){
 
 	$password1 = md5($password1);
 
 	mysqli_query($link, "INSERT INTO `users`	 (`id`, `login`, `pass`, `role_id`)	  VALUES 	  (NULL, '$login', '$password1', '3')");
 
-		$_SESSION['message'] = 'Регистрация прошла успешно';
+		$_SESSION['message'] = 'registration completed successfully';
 	header('Location: ../index.php');
 
 } else {
-	$_SESSION['message'] = 'Пароли не совпадают';
+	$_SESSION['message'] = 'Passwords are not the same';
 	header('Location: ../registration.php');
 }
+
+ }
+
+}
+
+
 
 
 ?>
