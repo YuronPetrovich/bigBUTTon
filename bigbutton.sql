@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Мар 25 2020 г., 01:22
+-- Время создания: Апр 19 2020 г., 03:24
 -- Версия сервера: 8.0.15
 -- Версия PHP: 7.1.32
 
@@ -40,7 +40,9 @@ CREATE TABLE `boreholes` (
 --
 
 INSERT INTO `boreholes` (`id`, `name`, `description`, `map_settings`) VALUES
-(1, 'first_hole', NULL, NULL);
+(1, 'first_hole', NULL, NULL),
+(2, 'second_hole', NULL, NULL),
+(3, 'third_hole', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -188,7 +190,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `pass`, `role_id`) VALUES
-(1, 'admin', 'admin', 1);
+(4446, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1),
+(4447, '1', 'c4ca4238a0b923820dcc509a6f75849b', 3);
 
 --
 -- Индексы сохранённых таблиц
@@ -250,7 +253,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `boreholes`
 --
 ALTER TABLE `boreholes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `borholes2field`
@@ -292,7 +295,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4448;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
